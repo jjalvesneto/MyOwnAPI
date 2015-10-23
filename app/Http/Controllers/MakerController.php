@@ -84,8 +84,23 @@ class MakerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CreateMakerRequest $request, $id)
     {
+        $maker = Maker::find($id);
+        
+        if (!$maker) 
+        {
+            return response()->json(['message' => 'This Maker does not exists', 'code' => 404], 404);
+        }
+
+        $name = $request->get('name');
+        $phone = $request->get('phone');
+
+        $maker->name = $name;
+        $maker->phone = $phone;
+
+        $maker->save();
+        return response()->json(['message'=> 'The maker has been updated'], 200);
         //
     }
 
